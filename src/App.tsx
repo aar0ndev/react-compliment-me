@@ -1,24 +1,29 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, {useState} from 'react';
+//import logo from './logo.svg';
+import { getSuggestion } from './brain/suggest'
 import './App.css';
 
+
 function App() {
+
+  const [compliment, setCompliment] = useState('')
+  const [name, setName] = useState('');
+  const updateName = (e: React.FormEvent<HTMLInputElement>) => {
+    setName(e.currentTarget.value)
+  }
+  const updateCompliment = () => {
+    const compli = getSuggestion()
+    setCompliment(compli.replace('{name}', name))
+  }
   return (
     <div className="App">
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+        <input className="name" type="text" placeholder="Enter Name" onInput={updateName}></input>
+        <button onClick={updateCompliment}>Compliment me!</button>
       </header>
+      <section>
+        <p className="result">{compliment}</p>
+      </section>
     </div>
   );
 }
